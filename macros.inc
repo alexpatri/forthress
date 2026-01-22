@@ -19,9 +19,9 @@
             dq LAST_NATIVE_ITEM
             db %1, 0
             db %3
-            %define LAST_NATIVE_ITEM w_ %+ %2
         xt_ %+ %2:
             dq i_ %+ %2
+        %define LAST_NATIVE_ITEM w_ %+ %2
     section .text
         i_ %+ %2:
 %endmacro
