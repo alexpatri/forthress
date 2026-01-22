@@ -36,7 +36,7 @@ _start:
     call read
 
     mov rdi, word_input
-    mov rsi, LAST_NATIVE_ITEM
+    mov rsi, LAST_WORD
     call find_word
 
     test rax, rax
