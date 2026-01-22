@@ -1,24 +1,13 @@
 %include "macros.inc"
 %include "utils.inc"
+%include "words.inc"
 
 %define MAX_WORD_SIZE 128
-
-native "hello", hello 
-    mov rdi, hello_msg
-    call print
-    xor rdi, rdi
-    jmp exit
-
-native "test", test
-    mov rdi, test_msg
-    call print
-    xor rdi, rdi
-    jmp exit
 
 section .data
     test_msg:  db "This is a Test!", 10, 0
     hello_msg: db "Hello, World!", 10, 0
-    error_msg: db "No value found for the provided key.", 0
+    error_msg: db "The provided word does not exist.", 0
     input_msg: db ">> ", 0
 
 section .bss

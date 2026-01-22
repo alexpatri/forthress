@@ -26,7 +26,7 @@ OBJS := $(OBJ_DIR)/main.o \
         $(OBJ_DIR)/utils/io.o
 
 # Includes
-INCLUDES := macros.inc utils.inc
+INCLUDES := macros.inc utils.inc words.inc
 
 # Regra padrão
 all: $(TARGET)
