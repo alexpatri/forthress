@@ -13,7 +13,10 @@ extern parse_uint
 extern parse_int
 extern string_equals
 extern string_copy
+extern exit
 
 extern find_word
+
+extern code_from_addr
 
 %endif
