@@ -1,34 +1,29 @@
-%define ITEM_NAME 8
+%define POINTER_SIZE 8
 
 section .text
 global find_word
 
 extern string_equals
-extern strlen
 
 ; rdi recebe uma string termindada com núlo como chave
 ; rsi recebe um ponteiro para a última palavra do dicionário
 ;
-; percorre o dicionário buscando pelo registro referente a chave informada
+; percorre o dicionário buscando pela palavra informada
 ;   devolve zero caso não encontre
-;   devolve o endereço do registro caso encontre
+;   devolve o endereço do cabeçalho da palavra caso encontre
 find_word:
     ; ponteiro para a chave a ser buscada
     mov r10, rdi
 
-    ; calcula tamanho da chave
-    ; offset para o endereço do valor
-    mov rdi, r10
-    call strlen
-    mov r11, rax
-    inc r11
-
 .loop:
+    ; ponteiro para o item atual 
+    mov r11, rsi
+
     ; ponteiro para o próximo item
     mov r8, [rsi]
 
     ; ponteiro para a chava
-    lea r9, [rsi + ITEM_NAME]
+    lea r9, [rsi + POINTER_SIZE]
 
     ; compara a chave informada com a chave do item da lista
     mov rdi, r10
@@ -48,7 +43,7 @@ find_word:
     jmp .loop
 
 .found:
-    lea rax, [r9 + r11]
+    mov rax, r11
     ret
 
 .not_found:
