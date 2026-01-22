@@ -1,0 +1,19 @@
+%ifndef _UTIL_
+%define _UTIL_
+
+extern strlen
+extern print
+extern print_char
+extern print_newline
+extern print_uint
+extern print_int
+extern read
+extern read_char
+extern parse_uint
+extern parse_int
+extern string_equals
+extern string_copy
+
+extern find_word
+
+%endif
