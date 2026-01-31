@@ -9,3 +9,9 @@ native "test", test
     call print
     xor rdi, rdi
     jmp exit
+
+native "exit", bye
+    mov rax, 60
+    xor rdi, rdi
+    syscall
+    

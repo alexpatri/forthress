@@ -9,6 +9,7 @@ extern print_uint
 extern print_int
 extern read
 extern read_char
+extern read_word
 extern parse_uint
 extern parse_int
 extern string_equals

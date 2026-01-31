@@ -2,7 +2,7 @@
 %include "utils.inc"
 %include "words.inc"
 
-%define MAX_WORD_SIZE 128
+%define MAX_WORD_SIZE 255
 
 section .data
     test_msg:  db "This is a Test!", 10, 0
@@ -21,10 +21,12 @@ _start:
     call print
 
     mov rdi, word_input
-    mov rsi, MAX_WORD_SIZE
-    call read
+    call read_word
 
-    mov rdi, word_input
+    cmp rax, 0
+    jz .exit
+
+    mov rdi, rax 
     mov rsi, LAST_WORD
     call find_word
 
@@ -35,6 +37,10 @@ _start:
     call code_from_addr
 
     jmp rax
+
+.exit:
+    xor rax, rax
+    jmp exit
 
 .not_found:
     mov rdi, error_msg

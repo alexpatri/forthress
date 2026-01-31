@@ -7,6 +7,7 @@ global print_uint
 global print_int
 global read
 global read_char
+global read_word
 global parse_uint
 global parse_int
 global string_equals
@@ -222,6 +223,59 @@ read:
     mov rax, rsi
 
     ret
+
+; rdi recebe o endereço de um buffer
+; rsi recebe o tamanho do buffer
+; ignora espaços, tabulações e quebras de linha
+; lê a próxima palavra de stdin e retorna o endereço do buffer
+read_word:
+    push r14
+    xor r14, r14 
+
+.A:
+    push rdi
+    call read_char
+    pop rdi
+    cmp al, ' '
+    je .A
+    cmp al, 10
+    je .A
+    cmp al, 13
+    je .A 
+    cmp al, 9 
+    je .A
+    test al, al
+    jz .C
+
+.B:
+    mov byte [rdi + r14], al
+    inc r14
+
+    push rdi
+    call read_char
+    pop rdi
+    cmp al, ' '
+    je .C
+    cmp al, 10
+    je .C
+    cmp al, 13
+    je .C 
+    cmp al, 9
+    je .C
+    test al, al
+    jz .C
+    cmp r14, 254
+    je .C 
+
+    jmp .B
+
+.C:
+    mov byte [rdi + r14], 0
+    mov rax, rdi 
+   
+    mov rdx, r14 
+    pop r14
+    ret    
 
 ; rdi recebe uma string terminada em nulo
 ; faz parse de uma string para um inteiro sem sinal
