@@ -282,13 +282,12 @@ read_word:
 parse_uint:
     call strlen
 
-    push rax
-
     mov rcx, rax
     xor rax, rax
+    xor rdx, rdx
     
     ; dacimal = base 10
-    mov rdx, 10
+    mov r8, 10
 
 ; itera do primeiro byte até o ultimo na string
 ; soma o número em decimal e multiplicando por 10 quando necessário
@@ -306,18 +305,26 @@ parse_uint:
     test rcx, rcx
     jz .end
 
-    movzx rsi, byte [rdi]
+    movzx rsi, byte [rdi + rdx]
+    cmp rsi, '0'
+    jb .error
+    cmp rsi, '9'
+    ja .error
+
     sub rsi, '0'
 
-    imul rax, rdx
+    imul rax, r8
     add rax, rsi
 
-    inc rdi
+    inc rdx
     dec rcx
     jmp .next_number
 
+.error:
+    xor rdx, rdx
+    xor rax, rax
+
 .end:
-    pop rdx
     ret
 
 ; rdi recebe um string
@@ -328,9 +335,17 @@ parse_int:
     
     inc rdi
     call parse_uint
+    test rdx, rdx
+    jz .error
+
+    inc rdx
 
     neg rax
     ret
+
+.error:
+    ret
+
 
 ; rdi e rsi recebem dois ponteiros para strings
 ; compara as duas strings:

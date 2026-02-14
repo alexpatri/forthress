@@ -1,17 +1,21 @@
 native "hello", hello 
     mov rdi, hello_msg
-    call print
-    xor rdi, rdi
-    jmp exit
-
-native "test", test
-    mov rdi, test_msg
-    call print
-    xor rdi, rdi
-    jmp exit
+    jmp print
+    call print_newline
+    jmp next
 
 native "exit", bye
     mov rax, 60
     xor rdi, rdi
     syscall
-    
+
+native "+", add
+    pop rax
+    add [rsp], rax
+    jmp next
+
+native ".", pop
+    pop rdi
+    call print_int
+    call print_newline
+    jmp next

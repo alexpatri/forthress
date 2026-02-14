@@ -4,6 +4,9 @@
 
 %define MAX_WORD_SIZE 255
 
+%define pc r15
+
+
 section .data
     test_msg:  db "This is a Test!", 10, 0
     hello_msg: db "Hello, World!", 10, 0
@@ -16,7 +19,13 @@ section .bss
 section .text
 global _start
 
+next:
+    jmp pc
+
 _start:
+    mov pc, .loop
+
+.loop:
     mov rdi, input_msg
     call print
 
@@ -31,12 +40,21 @@ _start:
     call find_word
 
     test rax, rax
-    jz .not_found
+    jz .number
 
     mov rdi, rax
     call code_from_addr
 
     jmp rax
+
+.number:
+    mov rdi, word_input
+    call parse_int
+    test rdx, rdx
+    jz .not_found
+
+    push rax
+    jmp .loop
 
 .exit:
     xor rax, rax
