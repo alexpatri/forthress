@@ -53,3 +53,10 @@ native ".S", show_stack
     .end:
     call print_newline
     jmp next
+
+native "swap", swap
+    pop rax
+    mov rdx, [rsp]
+    mov [rsp], rax
+    push rdx
+    jmp next
