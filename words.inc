@@ -60,3 +60,11 @@ native "swap", swap
     mov [rsp], rax
     push rdx
     jmp next
+
+native "dup", dup
+    push qword [rsp]
+    jmp next
+
+native "drop", drop
+    add rsp, 8
+    jmp next
