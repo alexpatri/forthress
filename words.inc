@@ -57,6 +57,35 @@ native "<", is_less
     mov byte [rsp], 1
     jmp next
 
+native "not", not
+    pop rax
+    test rax, rax
+    jz .zero
+
+    push 0
+    jmp next
+
+    .zero:
+    push 1
+    jmp next
+
+native "and", and
+    pop rax
+    pop rdx
+
+    test rax, rax
+    jz .false
+
+    test rdx, rdx
+    jz .false
+
+    push 1
+    jmp next
+
+    .false:
+    push 0
+    jmp next
+
 native ".", pop
     pop rdi
     call print_int
