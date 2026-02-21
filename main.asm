@@ -6,12 +6,12 @@
 
 %define pc r15
 
-
 section .data
-    test_msg:  db "This is a Test!", 10, 0
     hello_msg: db "Hello, World!", 10, 0
     error_msg: db "The provided word does not exist.", 0
     input_msg: db ">> ", 0
+
+    stack_base: dq 0
 
 section .bss
     word_input: resb MAX_WORD_SIZE
@@ -24,6 +24,7 @@ next:
 
 _start:
     mov pc, .loop
+    mov [stack_base], rsp
 
 .loop:
     mov rdi, input_msg
@@ -57,7 +58,7 @@ _start:
     jmp .loop
 
 .exit:
-    xor rax, rax
+    xor rdi, rdi
     jmp exit
 
 .not_found:
@@ -65,5 +66,4 @@ _start:
     call print
     call print_newline
 
-    mov rdi, 1
-    jmp exit
+    jmp .loop
