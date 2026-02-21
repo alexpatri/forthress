@@ -33,6 +33,30 @@ native "/", div
     push rax
     jmp next
 
+native "=", is_equal
+    pop rax
+    cmp rax, [rsp]
+    je .equal
+
+    mov byte [rsp], 0
+    jmp next
+
+    .equal:
+    mov byte [rsp], 1
+    jmp next
+
+native "<", is_less
+    pop rax
+    cmp rax, [rsp]
+    jl .less
+
+    mov byte [rsp], 0
+    jmp next
+
+    .less:
+    mov byte [rsp], 1
+    jmp next
+
 native ".", pop
     pop rdi
     call print_int
