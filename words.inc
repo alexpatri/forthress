@@ -25,6 +25,14 @@ native "*", mul
     push rax
     jmp next
 
+native "/", div
+    pop rax
+    pop rcx
+    cqo         ; replica o bit de sinal de RAX em todos os bits de RDX
+    idiv rcx
+    push rax
+    jmp next
+
 native ".", pop
     pop rdi
     call print_int
