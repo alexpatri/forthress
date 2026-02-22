@@ -115,6 +115,15 @@ native ".S", show_stack
     call print_newline
     jmp next
 
+native "rot", rot
+    pop rax
+    pop rdx
+    pop rcx
+    push rdx
+    push rax
+    push rcx
+    jmp next
+
 native "swap", swap
     pop rax
     mov rdx, [rsp]
