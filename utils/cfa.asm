@@ -20,5 +20,5 @@ code_from_addr:
 .end:
     add rdi, FLAGS_OFFSET
 
-    mov rax, [rdi]
+    mov rax, rdi
     ret

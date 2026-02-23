@@ -5,13 +5,20 @@
 %define MAX_WORD_SIZE 255
 
 %define pc r15
+%define w r14
 
 section .data
     hello_msg: db "Hello, World!", 10, 0
     error_msg: db "The provided word does not exist.", 0
-    ; input_msg: db ">> ", 0
 
     stack_base: dq 0
+
+    ; program_stub é dividido em duas partes
+    ; primeiro um espaço vazio para um xt (onde fica armazenado o xt da palavra lida em stdin)
+    ; sedundo o xt do interpretador (é dessa forma que é feito o loop em next)
+    program_stub: dq 0
+    xt_interpreter: dq .interpreter
+    .interpreter: dq interpreter_loop
 
 section .bss
     word_input: resb MAX_WORD_SIZE
@@ -19,17 +26,24 @@ section .bss
 section .text
 global _start
 
+; quando é lido uma palavra:
+; pc contem o mesmo que program_stub
+; ou seja o primeiro elemento é o xt da palavra a ser executada e o segundo é o xt do interpreter
+; quando se soma 8 pc passa a conter, no primeiro elemento o xt do interpreter
+;
+; quando next vem de uma palavra:
+; pc contem xt do interpreter, dessa forma o `jump [w]` pula para o interpreter
+;
+; é dessa forma que funciona o loop do interpretador
 next:
-    jmp pc
+    mov w, [pc]
+    add pc, 8
+    jmp [w]
 
 _start:
-    mov pc, .loop
     mov [stack_base], rsp
 
-.loop:
-    ; mov rdi, input_msg
-    ; call print
-
+interpreter_loop:
     mov rdi, word_input
     call read_word
 
@@ -46,7 +60,11 @@ _start:
     mov rdi, rax
     call code_from_addr
 
-    jmp rax
+    ; move o xt da palavra lida para program_stub
+    ; move program_stub para pc e pula para next
+    mov [program_stub], rax
+    mov pc, program_stub
+    jmp next
 
 .number:
     mov rdi, word_input
@@ -55,7 +73,7 @@ _start:
     jz .not_found
 
     push rax
-    jmp .loop
+    jmp interpreter_loop
 
 .exit:
     xor rdi, rdi
@@ -66,4 +84,4 @@ _start:
     call print
     call print_newline
 
-    jmp .loop
+    jmp interpreter_loop
