@@ -138,3 +138,13 @@ native "dup", dup
 native "drop", drop
     add rsp, 8
     jmp next
+
+native "key", key
+    call read_char
+    push rax
+    jmp next
+
+native "emit", emit
+    pop rdi
+    call print_char
+    jmp next

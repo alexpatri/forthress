@@ -9,7 +9,7 @@
 section .data
     hello_msg: db "Hello, World!", 10, 0
     error_msg: db "The provided word does not exist.", 0
-    input_msg: db ">> ", 0
+    ; input_msg: db ">> ", 0
 
     stack_base: dq 0
 
@@ -27,8 +27,8 @@ _start:
     mov [stack_base], rsp
 
 .loop:
-    mov rdi, input_msg
-    call print
+    ; mov rdi, input_msg
+    ; call print
 
     mov rdi, word_input
     call read_word
