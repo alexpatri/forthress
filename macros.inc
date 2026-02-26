@@ -6,7 +6,8 @@
             dq LAST_WORD 
             db %1, 0 
             db %3
-        xt_ %+ %2:
+        xt_ %+ %2: 
+            dq i_docol
         %define LAST_WORD w_ %+ %2 
 %endmacro
 
@@ -29,4 +30,14 @@
 
 %macro native 2
     native %1, %2, 0
+%endmacro
+
+%macro rpush 1
+    sub rstack, 8
+    mov qword [rstack], %1
+%endmacro
+
+%macro rpop 1
+    mov %1, qword [rstack]
+    add rstack, 8
 %endmacro

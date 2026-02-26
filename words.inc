@@ -3,7 +3,7 @@ native "hello", hello
     call print
     jmp next
 
-native "exit", bye
+native "bey", bye
     mov rax, 60
     xor rdi, rdi
     syscall
@@ -148,3 +148,28 @@ native "emit", emit
     pop rdi
     call print_char
     jmp next
+
+native "docol", docol
+    rpush pc
+    add w, 8
+    mov pc, w
+    jmp next
+
+native "exit", exit
+    rpop pc
+    jmp next
+
+colon ">", is_greater
+    dq xt_swap
+    dq xt_is_less
+    dq xt_exit
+
+colon "<=", is_less_or_equal
+    dq xt_is_greater
+    dq xt_not
+    dq xt_exit
+
+colon ">=", is_greater_or_equal
+    dq xt_is_less
+    dq xt_not
+    dq xt_exit

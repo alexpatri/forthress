@@ -1,11 +1,11 @@
 %include "macros.inc"
 %include "utils.inc"
-%include "words.inc"
 
 %define MAX_WORD_SIZE 255
 
 %define pc r15
 %define w r14
+%define rstack r13
 
 section .data
     hello_msg: db "Hello, World!", 10, 0
@@ -21,7 +21,13 @@ section .data
     .interpreter: dq interpreter_loop
 
 section .bss
+    ; pilha para 'colon'
+    resq 1023
+    rstack_start: resq 1
+
     word_input: resb MAX_WORD_SIZE
+
+%include "words.inc"
 
 section .text
 global _start
@@ -41,6 +47,7 @@ next:
     jmp [w]
 
 _start:
+    mov rstack, rstack_start
     mov [stack_base], rsp
 
 interpreter_loop:
