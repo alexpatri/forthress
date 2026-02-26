@@ -173,3 +173,11 @@ colon ">=", is_greater_or_equal
     dq xt_is_less
     dq xt_not
     dq xt_exit
+
+colon "or", or
+    dq xt_not
+    dq xt_swap
+    dq xt_not
+    dq xt_and
+    dq xt_not
+    dq xt_exit
