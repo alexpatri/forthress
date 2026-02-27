@@ -159,6 +159,30 @@ native "exit", exit
     rpop pc
     jmp next
 
+native "!", store
+    pop rax
+    pop rdx
+    mov [rdx], rax
+    jmp rax
+
+native "c!", store_char
+    pop rax
+    pop rdx
+    mov rdx, [rdx]
+    movzx rdx, byte [rax]
+    jmp next
+
+native "@", fetch
+    pop rax
+    push qword [rax]
+    jmp next
+
+native "c@", fetch_char
+    pop rax
+    movzx rax, byte [rax]
+    push rax
+    jmp next
+
 colon ">", is_greater
     dq xt_swap
     dq xt_is_less
