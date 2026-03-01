@@ -1,7 +1,8 @@
 %include "macros.inc"
 %include "utils.inc"
 
-%define MAX_WORD_SIZE 255
+%define MAX_WORD_SIZE 1024
+%define MEMORY_SIZE 65536
 
 %define pc r15
 %define w r14
@@ -26,6 +27,8 @@ section .bss
     rstack_start: resq 1
 
     word_input: resb MAX_WORD_SIZE
+
+    user_memory: resq MEMORY_SIZE
 
 %include "words.inc"
 

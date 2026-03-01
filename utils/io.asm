@@ -405,7 +405,3 @@ string_copy:
 
 .end:
     ret
-
-; obs: se atentar ao alinhamento da pilha ao realizar chamadas de sistema
-; o código não stpa seguindo a convensão do System V ABI quando a isso
-; pesquisar mias sobre 'stack alignment' e 'ABI SysV'

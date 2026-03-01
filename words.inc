@@ -3,7 +3,7 @@ native "hello", hello
     call print
     jmp next
 
-native "bey", bye
+native "bye", bye
     mov rax, 60
     xor rdi, rdi
     syscall
@@ -159,17 +159,14 @@ native "exit", exit
     rpop pc
     jmp next
 
+native "mem", mem
+    push qword user_memory
+    jmp next
+
 native "!", store
     pop rax
     pop rdx
     mov [rdx], rax
-    jmp rax
-
-native "c!", store_char
-    pop rax
-    pop rdx
-    mov rdx, [rdx]
-    movzx rdx, byte [rax]
     jmp next
 
 native "@", fetch
