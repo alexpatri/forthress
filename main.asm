@@ -8,11 +8,15 @@
 %define w r14
 %define rstack r13
 
+%include "words.inc"
+
 section .data
     hello_msg: db "Hello, World!", 10, 0
     error_msg: db "The provided word does not exist.", 0
 
     stack_base: dq 0
+    last_word: dq LAST_WORD
+    here: dq dict_memory
 
     ; program_stub é dividido em duas partes
     ; primeiro um espaço vazio para um xt (onde fica armazenado o xt da palavra lida em stdin)
@@ -28,9 +32,8 @@ section .bss
 
     word_input: resb MAX_WORD_SIZE
 
+    dict_memory: resb MEMORY_SIZE
     user_memory: resq MEMORY_SIZE
-
-%include "words.inc"
 
 section .text
 global _start
@@ -61,7 +64,7 @@ interpreter_loop:
     jz .exit
 
     mov rdi, rax 
-    mov rsi, LAST_WORD
+    mov rsi, last_word
     call find_word
 
     test rax, rax
