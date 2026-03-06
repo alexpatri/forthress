@@ -25,15 +25,19 @@ section .data
     xt_interpreter: dq .interpreter
     .interpreter: dq interpreter_loop
 
+    state: db 0
+    here: dq dict_memory
+    last_word: dq LAST_WORD
+
 section .bss
     ; pilha para 'colon'
     resq 1023
     rstack_start: resq 1
 
-    word_input: resb MAX_WORD_SIZE
+    input_buffer: resb MAX_WORD_SIZE
 
-    dict_memory: resb MEMORY_SIZE
     user_memory: resq MEMORY_SIZE
+    dict_memory: resq MEMORY_SIZE
 
 section .text
 global _start
@@ -57,7 +61,7 @@ _start:
     mov [stack_base], rsp
 
 interpreter_loop:
-    mov rdi, word_input
+    mov rdi, input_buffer
     call read_word
 
     cmp rax, 0
@@ -80,7 +84,7 @@ interpreter_loop:
     jmp next
 
 .number:
-    mov rdi, word_input
+    mov rdi, input_buffer
     call parse_int
     test rdx, rdx
     jz .not_found

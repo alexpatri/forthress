@@ -163,6 +163,16 @@ native "mem", mem
     push qword user_memory
     jmp next
 
+native "inbuf", inbuf
+    push qword input_buffer
+    jmp next
+
+native "word", word
+    pop rdi
+    call read_word
+    push rdx
+    jmp next
+
 native "!", store
     pop rax
     pop rdx
