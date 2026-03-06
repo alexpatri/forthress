@@ -41,3 +41,8 @@
     mov %1, qword [rstack]
     add rstack, 8
 %endmacro
+
+%macro branch0 1 
+dq xt_branch0
+dq %1 - $ - 8
+%endmacro

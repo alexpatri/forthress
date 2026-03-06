@@ -15,8 +15,6 @@ section .data
     error_msg: db "The provided word does not exist.", 0
 
     stack_base: dq 0
-    last_word: dq LAST_WORD
-    here: dq dict_memory
 
     ; program_stub é dividido em duas partes
     ; primeiro um espaço vazio para um xt (onde fica armazenado o xt da palavra lida em stdin)
@@ -25,6 +23,7 @@ section .data
     xt_interpreter: dq .interpreter
     .interpreter: dq interpreter_loop
 
+    ; necessário para modo de compilação
     state: db 0
     here: dq dict_memory
     last_word: dq LAST_WORD

@@ -173,6 +173,15 @@ native "word", word
     push rdx
     jmp next
 
+native "0branch", branch0
+    pop rax
+    test rax, rax
+    jnz .skip
+    add pc, [pc]
+    .skip:
+    add pc, 8
+    jmp next
+
 native "!", store
     pop rax
     pop rdx
@@ -188,6 +197,33 @@ native "c@", fetch_char
     pop rax
     movzx rax, byte [rax]
     push rax
+    jmp next
+
+native "create", create
+    mov rcx, [last_word]
+    mov rsi, [here]
+    mov [rsi], rcx
+    mov [last_word], rsi
+    add rsi, 8
+    mov byte [rsi], 0
+    inc rsi
+    
+    pop rdi
+    push rsi
+    call string_copy 
+    pop rsi
+    push rsi
+    mov rdi, rsi
+    call strlen
+    pop rsi
+    add rsi, rax
+    
+    inc rsi
+    pop rax
+    mov [rsi], al
+    inc rsi
+     
+    mov [here], rsi
     jmp next
 
 colon ">", is_greater
