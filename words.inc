@@ -167,6 +167,17 @@ native "inbuf", inbuf
     push qword input_buffer
     jmp next
 
+native "lit", lit
+    push qword [pc]
+    add pc, 8
+    jmp next
+
+native ",", comma
+    mov rax, [here]
+    pop qword [rax]
+    add qword [here], 8
+    jmp next
+
 native "word", word
     pop rdi
     call read_word
